@@ -1,5 +1,6 @@
 import React from "react";
 import { IonPage, IonContent, IonButton, IonTitle } from "@ionic/react";
+import Author from "../../components/author";
 
 function Login({ login }) {
   return (
@@ -13,15 +14,23 @@ function Login({ login }) {
             style={{
               flex: "unset",
               fontFamily: "Pacifico",
-              fontSize: 48,
-              marginBottom: 24
+              fontSize: 48
             }}
           >
             Weeek
           </IonTitle>
-          <IonButton expand="block" color="primary" onClick={login}>
+          <IonButton
+            style={{
+              "--color": "black",
+              "--background":
+                "linear-gradient(45deg, rgba(234, 146, 151, 0.5), rgba(224, 120, 214, 0.5))"
+            }}
+            expand="block"
+            onClick={login}
+          >
             Sign-in with Google
           </IonButton>
+          <Author />
         </div>
       </IonContent>
     </IonPage>

@@ -4,10 +4,14 @@ import {
   IonItem,
   IonItemSliding,
   IonItemOption,
-  IonIcon,
-  IonCheckbox
+  IonIcon
 } from "@ionic/react";
-import { createOutline, trashOutline } from "ionicons/icons";
+import {
+  createOutline,
+  trashOutline,
+  checkmarkOutline,
+  closeOutline
+} from "ionicons/icons";
 
 const DONE_TEXT_STYLE = {
   color: "#888",
@@ -26,13 +30,22 @@ function Task({ task, onToggleDone, onModify, onRemove }) {
 
   return (
     <IonItemSliding ref={slidingRef}>
-      <IonItem>
-        <IonCheckbox
+      <IonItemOptions
+        side="start"
+        onIonSwipe={callbackAndCloseOptions(onToggleDone)}
+      >
+        <IonItemOption
           color="light"
-          slot="start"
-          checked={task.done}
-          onIonChange={callbackAndCloseOptions(onToggleDone)}
-        />
+          expandable
+          onClick={callbackAndCloseOptions(onToggleDone)}
+        >
+          <IonIcon
+            slot="icon-only"
+            icon={task.done ? closeOutline : checkmarkOutline}
+          />
+        </IonItemOption>
+      </IonItemOptions>
+      <IonItem>
         <span style={task.done ? DONE_TEXT_STYLE : null}>{task.text}</span>
       </IonItem>
       <IonItemOptions side="end">
