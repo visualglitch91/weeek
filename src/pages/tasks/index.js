@@ -10,7 +10,7 @@ import {
   IonIcon
 } from "@ionic/react";
 import { addOutline, logOutOutline } from "ionicons/icons";
-import { getCurrentWeek } from "../../utils";
+import { getCurrentWeek, presentAlert } from "../../utils";
 import { db, serverTimestamp } from "../../firebase";
 import Author from "../../components/author";
 import TaskList from "./task-list";
@@ -37,6 +37,25 @@ function TasksPage({ user, logout }) {
       });
 
     return unsubscribe;
+  }, [user.uid]);
+
+  useEffect(() => {
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then(doc => {
+        if (!doc.get("seenTutorial")) {
+          presentAlert(
+            null,
+            "Swipes task right to mark them done/undone<br/><br/>Swipe tasks left to change or delete them",
+            "Got it!"
+          );
+
+          db.collection("users")
+            .doc(user.uid)
+            .set({ seenTutorial: true }, { merge: true });
+        }
+      });
   }, [user.uid]);
 
   function onToggleDone({ id, done }) {
@@ -88,7 +107,7 @@ function TasksPage({ user, logout }) {
         <IonToolbar
           style={{
             "--background":
-              "linear-gradient(45deg, rgb(244, 200, 203), rgb(240, 187, 234))"
+              "linear-gradient(0deg, rgb(244, 200, 203), rgb(240, 187, 234))"
           }}
         >
           <IonButtons slot="end">
