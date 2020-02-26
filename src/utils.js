@@ -15,3 +15,14 @@ export function incrementWeek(week, increment) {
     .add(increment, "week")
     .format(DATE_FORMAT);
 }
+
+export function presentAlert(title, message, button) {
+  const alert = document.createElement("ion-alert");
+
+  alert.header = title;
+  alert.message = message;
+  alert.buttons = [button];
+
+  document.body.appendChild(alert);
+  alert.present();
+}
