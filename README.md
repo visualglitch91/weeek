@@ -6,6 +6,8 @@ I want to plan stuff I have to do in the week without setting a specific day (I 
 
 You won't find tests here and yeah, you can judge me, I would too, but I did this during the night, exploring what I could do with Ionic and Firebase, which I've never used before, so it's basicaly and experimentation that went way too well.
 
+Also because of this I didn't care about performance AT ALL, we are always getting everything from firebase and looping though it a few times. I don't think it's gonna become a problem anytime soon, and even if it does, it would be easy to limit the data to a short range.
+
 You can run it with or without firebase, if you want firebase, just set the following env vars:
 
 ```
