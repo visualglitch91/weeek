@@ -107,7 +107,7 @@ function TasksPage({ user, logout }) {
         <IonToolbar
           style={{
             "--background":
-              "linear-gradient(0deg, rgb(244, 200, 203), rgb(240, 187, 234))"
+              "linear-gradient(0deg, rgb(200, 240, 244), rgb(240, 187, 234))"
           }}
         >
           <IonButtons slot="end">
