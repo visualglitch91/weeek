@@ -11,57 +11,40 @@ import {
 } from "@ionic/react";
 import { addOutline, logOutOutline } from "ionicons/icons";
 import { getCurrentWeek, presentAlert } from "../../utils";
-import { db, serverTimestamp } from "../../firebase";
+import userService from "../../services/user";
+import taskService from "../../services/tasks";
 import Author from "../../components/author";
 import TaskList from "./task-list";
 import FormModal from "./form-modal";
 
-function TasksPage({ user, logout }) {
+function TasksPage({ logout }) {
   const [formTask, setFormTask] = useState(null);
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = db
-      .collection("tasks")
-      .where("user", "==", user.uid)
-      .orderBy("created_at", "asc")
-      .orderBy("week", "asc")
-      .onSnapshot(snapshot => {
-        const nextTasks = [];
-
-        snapshot.forEach(doc => {
-          nextTasks.push({ id: doc.id, ...doc.data() });
-        });
-
-        setTasks(nextTasks);
-      });
-
+    const unsubscribe = taskService.subscribe(setTasks);
     return unsubscribe;
-  }, [user.uid]);
+  }, []);
 
   useEffect(() => {
-    db.collection("users")
-      .doc(user.uid)
-      .get()
-      .then(doc => {
-        if (!doc.get("seenTutorial")) {
-          presentAlert(
-            null,
-            "Swipes task right to mark them done/undone<br/><br/>Swipe tasks left to change or delete them",
-            "Got it!"
-          );
+    userService.getSettings().then(({ seenTutorial }) => {
+      if (!seenTutorial) {
+        presentAlert(
+          null,
+          [
+            "Swipes task right to mark them done/undone",
+            "Swipe tasks left to change or delete them"
+          ],
+          ["Got it!"]
+        );
 
-          db.collection("users")
-            .doc(user.uid)
-            .set({ seenTutorial: true }, { merge: true });
-        }
-      });
-  }, [user.uid]);
+        userService.updateSettings({ seenTutorial: true }, { merge: true });
+      }
+    });
+  }, []);
 
   function onToggleDone({ id, done }) {
-    db.collection("tasks")
-      .doc(id)
-      .set({ done: !done }, { merge: true });
+    taskService.update(id, { done: !done }, { merge: true });
   }
 
   function onModify(task) {
@@ -69,9 +52,7 @@ function TasksPage({ user, logout }) {
   }
 
   function onRemove({ id }) {
-    db.collection("tasks")
-      .doc(id)
-      .delete();
+    taskService.remove(id);
   }
 
   function onNewTask() {
@@ -79,18 +60,15 @@ function TasksPage({ user, logout }) {
       id: null,
       text: "",
       week: getCurrentWeek(),
-      done: false,
-      user: user.uid
+      done: false
     });
   }
 
   function onFormSave({ id, ...values }) {
     if (id) {
-      db.collection("tasks")
-        .doc(id)
-        .set(values);
+      taskService.update(id, values);
     } else {
-      db.collection("tasks").add({ ...values, created_at: serverTimestamp() });
+      taskService.create(values);
     }
 
     setFormTask(null);
@@ -118,9 +96,15 @@ function TasksPage({ user, logout }) {
             >
               <IonIcon icon={addOutline} />
             </IonButton>
-            <IonButton style={{ fontSize: 20 }} color="danger" onClick={logout}>
-              <IonIcon icon={logOutOutline} />
-            </IonButton>
+            {process.env.REACT_APP_USE_FIREBASE && (
+              <IonButton
+                style={{ fontSize: 20 }}
+                color="danger"
+                onClick={logout}
+              >
+                <IonIcon icon={logOutOutline} />
+              </IonButton>
+            )}
           </IonButtons>
           <IonTitle style={{ fontFamily: "Pacifico", fontSize: 26 }}>
             Weeek

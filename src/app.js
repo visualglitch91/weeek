@@ -13,27 +13,33 @@ import "@ionic/react/css/display.css";
 
 import Tasks from "./pages/tasks";
 import Login from "./pages/login";
-import { auth, googleAuthProvider } from "./firebase";
-
-function login() {
-  auth.signInWithPopup(googleAuthProvider);
-}
-
-function logout() {
-  auth.signOut();
-}
+import userService from "./services/user";
+import { presentAlert } from "./utils";
 
 function App() {
   const [user, setUser] = useState(undefined);
 
-  useEffect(() => auth.onAuthStateChanged(setUser), []);
+  useEffect(() => userService.onAuthStateChanged(setUser), []);
+
+  useEffect(() => {
+    if (!process.env.REACT_APP_USE_FIREBASE) {
+      presentAlert(
+        null,
+        [
+          "This version you are running is not connected to firebase,",
+          "that means that all the data will be stored locally on this device."
+        ].join(" "),
+        ["Okay!"]
+      );
+    }
+  }, []);
 
   return (
     <IonApp mode="md">
       {typeof user === "undefined" ? null : user === null ? (
-        <Login login={login} />
+        <Login login={userService.login} />
       ) : (
-        <Tasks user={user} logout={logout} />
+        <Tasks logout={userService.logout} />
       )}
     </IonApp>
   );
