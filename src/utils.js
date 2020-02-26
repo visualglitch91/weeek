@@ -16,12 +16,12 @@ export function incrementWeek(week, increment) {
     .format(DATE_FORMAT);
 }
 
-export function presentAlert(title, message, button) {
+export function presentAlert(title, message, buttons) {
   const alert = document.createElement("ion-alert");
 
   alert.header = title;
-  alert.message = message;
-  alert.buttons = [button];
+  alert.message = Array.isArray(message) ? message.join("<br/><br/>") : message;
+  alert.buttons = buttons;
 
   document.body.appendChild(alert);
   alert.present();
