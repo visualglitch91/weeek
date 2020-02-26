@@ -5,8 +5,18 @@ import Task from "./task";
 
 function TaskSection({ children }) {
   return (
-    <IonItemDivider sticky>
-      <IonLabel>{children}</IonLabel>
+    <IonItemDivider
+      sticky
+      style={{ "--background": "#f3f3f3", "--color": "black" }}
+    >
+      <IonLabel
+        style={{
+          fontWeight: "bold",
+          fontSize: 14
+        }}
+      >
+        {children}
+      </IonLabel>
     </IonItemDivider>
   );
 }
@@ -55,11 +65,11 @@ function TaskList({ tasks, onToggleDone, onModify, onRemove }) {
   }
 
   return (
-    <IonList lines="full">
+    <IonList lines="full" className="ion-no-padding">
       {renderSection("Past", pastTasks)}
       {renderSection("Last week", lastWeekTasks)}
-      {renderSection("This Week", thisWeekTasks)}
-      {renderSection("Next Week", nextWeekTasks)}
+      {renderSection("This week", thisWeekTasks)}
+      {renderSection("Next week", nextWeekTasks)}
       {renderSection("Future", futureTasks)}
     </IonList>
   );

@@ -45,7 +45,7 @@ function Task({ task, onToggleDone, onModify, onRemove }) {
           />
         </IonItemOption>
       </IonItemOptions>
-      <IonItem>
+      <IonItem style={{ fontSize: 15 }}>
         <span style={task.done ? DONE_TEXT_STYLE : null}>{task.text}</span>
       </IonItem>
       <IonItemOptions side="end">
