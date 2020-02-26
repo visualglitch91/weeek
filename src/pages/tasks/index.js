@@ -12,6 +12,7 @@ import {
 import { addOutline, logOutOutline } from "ionicons/icons";
 import { getCurrentWeek } from "../../utils";
 import { db, serverTimestamp } from "../../firebase";
+import Author from "../../components/author";
 import TaskList from "./task-list";
 import FormModal from "./form-modal";
 
@@ -84,16 +85,27 @@ function TasksPage({ user, logout }) {
     <IonPage id="tasks">
       <FormModal task={formTask} onSave={onFormSave} onCancel={onFormCancel} />
       <IonHeader>
-        <IonToolbar style={{ "--background": "#f7f1ff" }}>
+        <IonToolbar
+          style={{
+            "--background":
+              "linear-gradient(45deg, rgba(234, 146, 151, 0.5), rgba(224, 120, 214, 0.5))"
+          }}
+        >
           <IonButtons slot="end">
-            <IonButton color="primary" onClick={onNewTask}>
+            <IonButton
+              style={{ fontSize: 20 }}
+              color="primary"
+              onClick={onNewTask}
+            >
               <IonIcon icon={addOutline} />
             </IonButton>
-            <IonButton color="danger" onClick={logout}>
+            <IonButton style={{ fontSize: 20 }} color="danger" onClick={logout}>
               <IonIcon icon={logOutOutline} />
             </IonButton>
           </IonButtons>
-          <IonTitle style={{ fontFamily: "Pacifico" }}>Weeek</IonTitle>
+          <IonTitle style={{ fontFamily: "Pacifico", fontSize: 26 }}>
+            Weeek
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -103,6 +115,7 @@ function TasksPage({ user, logout }) {
           onModify={onModify}
           onRemove={onRemove}
         />
+        <Author />
       </IonContent>
     </IonPage>
   );
