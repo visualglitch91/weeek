@@ -1,68 +1,39 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![weeek](https://i.imgur.com/WfY3IzC.png?1)
 
-## Available Scripts
+This a nice and pretty and cute to-do list that I did because I hated all the others.
 
-In the project directory, you can run:
+I want to plan stuff I have to do in the week without setting a specific day (I don't know, I just work better this way).
 
-### `yarn start`
+You won't find tests here and yeah, you can judge me, I would too, but I did this during the night, exploring what I could do with Ionic and Firebase, which I've never used before, so it's basicaly and experimentation that went way too well.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+You can run it with or without firebase, if you want firebase, just set the following env vars:
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```
+REACT_APP_USE_FIREBASE=1
+REACT_APP_API_KEY=YOUR_API_KEY
+REACT_APP_AUTH_DOMAIN=YOUR_AUTH_DOMAIN
+REACT_APP_DATABASE_URL=YOUR_DATABASE_URL
+REACT_APP_PROJECT_ID=YOUR_PROJECT_ID
+REACT_APP_STORAGE_BUCKET=YOUR_STORAGE_BUCKET
+REACT_APP_MESSAGING_SENDER_ID=YOUR_MESSAGING_SENDER_ID
+REACT_APP_APP_ID=YOUR_APP_ID
+```
 
-### `yarn test`
+The firestore rules should be this (or at least I think they should, I have no idea what I'm doing here)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /tasks/{id} {
+      allow read, update, delete: if request.auth.uid == resource.data.user;
+      allow create: if request.auth.uid != null && request.resource.data.user == request.auth.uid;
+    }
+     match /users/{userId} {
+      allow read, write: if request.auth.uid == userId;
+    }
+  }
+}
+```
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Anyway, in gereneral, this is a standard create-react-app project, so just run `yarn` to install dependencies, `yarn start` to start the development server and `yarn build` to build the production files.
