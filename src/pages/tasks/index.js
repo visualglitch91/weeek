@@ -100,7 +100,6 @@ function TasksPage({ logout }) {
       <FormModal task={formTask} onSave={onFormSave} onCancel={onFormCancel} />
       <IonFab vertical="bottom" horizontal="end" slot="fixed">
         <IonFabButton
-          size="small"
           onClick={onNewTask}
           style={{
             "--color": "black",
