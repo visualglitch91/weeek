@@ -134,7 +134,12 @@ function TasksPage({ logout }) {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonRefresher slot="fixed" onIonRefresh={onPullToRefresh}>
+        <IonRefresher
+          style={{ height: 120 }}
+          pullMin={120}
+          slot="fixed"
+          onIonRefresh={onPullToRefresh}
+        >
           <IonRefresherContent
             pullingIcon="nope"
             refreshingIcon="nope"
