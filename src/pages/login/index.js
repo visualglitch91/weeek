@@ -23,7 +23,7 @@ function Login({ login }) {
             style={{
               "--color": "black",
               "--background":
-                "linear-gradient(45deg, rgb(244, 200, 203), rgb(240, 187, 234))"
+                "linear-gradient(45deg, rgb(200, 240, 244), rgb(240, 187, 234))"
             }}
             expand="block"
             onClick={login}
