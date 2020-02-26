@@ -7,7 +7,11 @@ import {
   IonButtons,
   IonButton,
   IonTitle,
-  IonIcon
+  IonIcon,
+  IonFab,
+  IonFabButton,
+  IonRefresher,
+  IonRefresherContent
 } from "@ionic/react";
 import { addOutline, logOutOutline } from "ionicons/icons";
 import { getCurrentWeek, presentAlert } from "../../utils";
@@ -16,6 +20,13 @@ import taskService from "../../services/tasks";
 import Author from "../../components/author";
 import TaskList from "./task-list";
 import FormModal from "./form-modal";
+import styles from "./index.module.css";
+
+const REFRESHER_CONTENT = `
+  <div class="${styles.refresherContent}">
+    Pull to create a new task
+  </div>
+`;
 
 function TasksPage({ logout }) {
   const [formTask, setFormTask] = useState(null);
@@ -32,6 +43,7 @@ function TasksPage({ logout }) {
         presentAlert(
           null,
           [
+            "Use the plus button or pull down to create a new task",
             "Swipes task right to mark them done/undone",
             "Swipe tasks left to change or delete them"
           ],
@@ -64,6 +76,11 @@ function TasksPage({ logout }) {
     });
   }
 
+  function onPullToRefresh(event) {
+    event.detail.complete();
+    setTimeout(onNewTask, 200);
+  }
+
   function onFormSave({ id, ...values }) {
     if (id) {
       taskService.update(id, values);
@@ -81,6 +98,19 @@ function TasksPage({ logout }) {
   return (
     <IonPage id="tasks">
       <FormModal task={formTask} onSave={onFormSave} onCancel={onFormCancel} />
+      <IonFab vertical="bottom" horizontal="end" slot="fixed">
+        <IonFabButton
+          size="small"
+          onClick={onNewTask}
+          style={{
+            "--color": "black",
+            "--background":
+              "linear-gradient(45deg, rgb(200, 240, 244), rgb(240, 187, 234))"
+          }}
+        >
+          <IonIcon icon={addOutline} />
+        </IonFabButton>
+      </IonFab>
       <IonHeader>
         <IonToolbar
           style={{
@@ -88,15 +118,11 @@ function TasksPage({ logout }) {
               "linear-gradient(0deg, rgb(200, 240, 244), rgb(240, 187, 234))"
           }}
         >
-          <IonButtons slot="end">
-            <IonButton
-              style={{ fontSize: 20 }}
-              color="primary"
-              onClick={onNewTask}
-            >
-              <IonIcon icon={addOutline} />
-            </IonButton>
-            {process.env.REACT_APP_USE_FIREBASE && (
+          <IonTitle style={{ fontFamily: "Pacifico", fontSize: 26 }}>
+            Weeek
+          </IonTitle>
+          {process.env.REACT_APP_USE_FIREBASE && (
+            <IonButtons slot="end">
               <IonButton
                 style={{ fontSize: 20 }}
                 color="danger"
@@ -104,14 +130,19 @@ function TasksPage({ logout }) {
               >
                 <IonIcon icon={logOutOutline} />
               </IonButton>
-            )}
-          </IonButtons>
-          <IonTitle style={{ fontFamily: "Pacifico", fontSize: 26 }}>
-            Weeek
-          </IonTitle>
+            </IonButtons>
+          )}
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent>
+        <IonRefresher slot="fixed" onIonRefresh={onPullToRefresh}>
+          <IonRefresherContent
+            pullingIcon="nope"
+            refreshingIcon="nope"
+            pullingText={REFRESHER_CONTENT}
+            refreshingText={REFRESHER_CONTENT}
+          ></IonRefresherContent>
+        </IonRefresher>
         <TaskList
           tasks={tasks}
           onToggleDone={onToggleDone}
