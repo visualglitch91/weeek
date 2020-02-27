@@ -6,7 +6,8 @@ import {
   IonInput,
   IonText,
   IonRadio,
-  IonRadioGroup
+  IonRadioGroup,
+  IonContent
 } from "@ionic/react";
 import Dialog from "@material-ui/core/Dialog";
 import { getCurrentWeek, incrementWeek } from "../../utils";
@@ -49,61 +50,63 @@ function Form({ task, onSave, onCancel }) {
       onExited={onDidDismiss}
       container={document.querySelector("ion-app")}
     >
-      <IonItem>
-        <IonText
-          className="ion-padding-vertical"
-          style={{ fontSize: 18, fontFamily: "Pacifico" }}
-        >
-          {modify ? "Update task" : "New task"}
-        </IonText>
-      </IonItem>
-      {values && (
-        <>
-          <IonItem>
-            <IonLabel position="floating">Task</IonLabel>
-            <IonInput
-              value={values.text}
-              placeholder="Buy groceries..."
-              onIonChange={onValueChange("text")}
-            ></IonInput>
-          </IonItem>
-          <IonRadioGroup
-            value={values.week}
-            onIonChange={onValueChange("week")}
+      <div>
+        <IonItem>
+          <IonText
+            className="ion-padding-vertical"
+            style={{ fontSize: 18, fontFamily: "Pacifico" }}
           >
-            <WeekOption label="This week" value={currentWeek} />
-            <WeekOption
-              label="Next week"
-              value={incrementWeek(currentWeek, 1)}
-            />
-            <WeekOption
-              label="In 2 weeks"
-              value={incrementWeek(currentWeek, 2)}
-            />
-            <WeekOption
-              label="In 3 weeks"
-              value={incrementWeek(currentWeek, 3)}
-            />
-            <WeekOption
-              label="In 4 weeks"
-              value={incrementWeek(currentWeek, 4)}
-            />
-          </IonRadioGroup>
-          <div className="ion-margin-top ion-text-end">
-            <IonButton color="secondary" onClick={onCancel} fill="clear">
-              Cancel
-            </IonButton>
-            <IonButton
-              disabled={values.text === ""}
-              color="primary"
-              onClick={submit}
-              fill="clear"
+            {modify ? "Update task" : "New task"}
+          </IonText>
+        </IonItem>
+        {values && (
+          <>
+            <IonItem>
+              <IonLabel position="floating">Task</IonLabel>
+              <IonInput
+                value={values.text}
+                placeholder="Buy groceries..."
+                onIonChange={onValueChange("text")}
+              ></IonInput>
+            </IonItem>
+            <IonRadioGroup
+              value={values.week}
+              onIonChange={onValueChange("week")}
             >
-              Save
-            </IonButton>
-          </div>
-        </>
-      )}
+              <WeekOption label="This week" value={currentWeek} />
+              <WeekOption
+                label="Next week"
+                value={incrementWeek(currentWeek, 1)}
+              />
+              <WeekOption
+                label="In 2 weeks"
+                value={incrementWeek(currentWeek, 2)}
+              />
+              <WeekOption
+                label="In 3 weeks"
+                value={incrementWeek(currentWeek, 3)}
+              />
+              <WeekOption
+                label="In 4 weeks"
+                value={incrementWeek(currentWeek, 4)}
+              />
+            </IonRadioGroup>
+            <div className="ion-margin-top ion-text-end">
+              <IonButton color="secondary" onClick={onCancel} fill="clear">
+                Cancel
+              </IonButton>
+              <IonButton
+                disabled={values.text === ""}
+                color="primary"
+                onClick={submit}
+                fill="clear"
+              >
+                Save
+              </IonButton>
+            </div>
+          </>
+        )}
+      </div>
     </Dialog>
   );
 }
