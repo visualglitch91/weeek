@@ -22,6 +22,7 @@ export function presentAlert(title, message, buttons) {
   alert.header = title;
   alert.message = Array.isArray(message) ? message.join("<br/><br/>") : message;
   alert.buttons = buttons;
+  alert.backdropDismiss = false;
 
   document.body.appendChild(alert);
   alert.present();
