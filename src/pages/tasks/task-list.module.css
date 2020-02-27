@@ -1,18 +1,21 @@
-.wrapper > *:nth-child(odd) {
-  --background: #effafb;
-  --ion-item-background: #effafb;
+.wrapper > div > * {
+  --background: transparent;
+  --ion-item-background: transparent;
 }
 
-.wrapper > *:nth-child(even) {
-  --background: #fef7fd;
-  --ion-item-background: #fef7fd;
+.wrapper > div:nth-child(odd) ion-item-sliding,
+.wrapper > div:nth-child(odd) ion-item-sliding > ion-item {
+  background: #effafb;
+  transition: background 300ms linear;
 }
 
-.wrapper ion-item-sliding {
-  background: var(--background);
+.wrapper > div:nth-child(even) ion-item-sliding,
+.wrapper > div:nth-child(even) ion-item-sliding > ion-item {
+  background: #fef7fd;
+  transition: background 300ms linear;
 }
 
-.wrapper > .divider {
+.wrapper > div > .divider {
   --background: #f4f4f4;
   --color: black;
   font-size: 12px;
@@ -21,7 +24,7 @@
   font-weight: bolder;
 }
 
-.wrapper > .divider ion-label {
+.wrapper > div > .divider ion-label {
   margin-top: 0px;
   margin-bottom: 0px;
 }
