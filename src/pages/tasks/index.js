@@ -1,41 +1,27 @@
 import React, { useState, useEffect } from "react";
-import {
-  IonPage,
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonButton,
-  IonTitle,
-  IonIcon,
-  IonFab,
-  IonFabButton,
-  IonRefresher,
-  IonRefresherContent
-} from "@ionic/react";
-import { addOutline, logOutOutline } from "ionicons/icons";
+import { IonPage, IonContent } from "@ionic/react";
 import { getCurrentWeek, presentAlert } from "../../utils";
+import useLocalState from "../../hooks/use-local-state";
 import userService from "../../services/user";
 import taskService from "../../services/tasks";
 import Author from "../../components/author";
 import TaskList from "./task-list";
 import FormModal from "./form-modal";
-import styles from "./index.module.css";
+import useHeader from "./use-header";
+import Menu from "./menu";
+import PullToCreate from "./pull-to-create";
 
-const REFRESHER_CONTENT = `
-  <div class="${styles.refresherContent}">
-    Pull to create a new task
-  </div>
-`;
-
-function TasksPage({ logout }) {
+function TasksPage({ logout: onLogout }) {
   const [formTask, setFormTask] = useState(null);
   const [tasks, setTasks] = useState([]);
+  const [ionContentRef, header] = useHeader();
 
-  useEffect(() => {
-    const unsubscribe = taskService.subscribe(setTasks);
-    return unsubscribe;
-  }, []);
+  const [showCompleted, setShowCompleted] = useLocalState(
+    `weeek__${userService.getUID()}__show_completed`,
+    true
+  );
+
+  useEffect(() => taskService.subscribe(setTasks), []);
 
   useEffect(() => {
     userService.getSettings().then(({ seenTutorial }) => {
@@ -54,6 +40,10 @@ function TasksPage({ logout }) {
       }
     });
   }, []);
+
+  function onShowCompletedToggle() {
+    setShowCompleted(x => !x);
+  }
 
   function onToggleDone({ id, done }) {
     taskService.update(id, { done: !done }, { merge: true });
@@ -74,7 +64,7 @@ function TasksPage({ logout }) {
         },
         {
           text: "Delete it!",
-          cssClass: styles.alertCancelButton,
+          cssClass: "alert-button-danger",
           handler: () => {
             taskService.remove(id);
           }
@@ -92,8 +82,7 @@ function TasksPage({ logout }) {
     });
   }
 
-  function onPullToRefresh(event) {
-    event.detail.complete();
+  function onPullToCreate() {
     setTimeout(onNewTask, 200);
   }
 
@@ -114,62 +103,25 @@ function TasksPage({ logout }) {
   return (
     <IonPage id="tasks">
       <FormModal task={formTask} onSave={onFormSave} onCancel={onFormCancel} />
-      <IonFab vertical="bottom" horizontal="end" slot="fixed">
-        <IonFabButton
-          onClick={onNewTask}
-          style={{
-            "--color": "black",
-            "--background":
-              "linear-gradient(45deg, rgb(200, 240, 244), rgb(240, 187, 234))"
-          }}
-        >
-          <IonIcon icon={addOutline} />
-        </IonFabButton>
-      </IonFab>
-      <IonHeader>
-        <IonToolbar
-          style={{
-            "--background":
-              "linear-gradient(0deg, rgb(200, 240, 244), rgb(240, 187, 234))"
-          }}
-        >
-          <IonTitle style={{ fontFamily: "Pacifico", fontSize: 26 }}>
-            Weeek
-          </IonTitle>
-          {process.env.REACT_APP_USE_FIREBASE && (
-            <IonButtons slot="end">
-              <IonButton
-                style={{ fontSize: 20 }}
-                color="danger"
-                onClick={logout}
-              >
-                <IonIcon icon={logOutOutline} />
-              </IonButton>
-            </IonButtons>
-          )}
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonRefresher
-          style={{ height: 120 }}
-          pullMin={120}
-          slot="fixed"
-          onIonRefresh={onPullToRefresh}
-        >
-          <IonRefresherContent
-            pullingIcon="nope"
-            refreshingIcon="nope"
-            pullingText={REFRESHER_CONTENT}
-            refreshingText={REFRESHER_CONTENT}
-          ></IonRefresherContent>
-        </IonRefresher>
+      <Menu
+        showCompleted={showCompleted}
+        onShowCompletedToggle={onShowCompletedToggle}
+        onNewTask={onNewTask}
+        onLogout={onLogout}
+      />
+      {header}
+      <IonContent ref={ionContentRef}>
+        <PullToCreate onPull={onPullToCreate} />
         <TaskList
+          showCompleted={showCompleted}
           tasks={tasks}
           onToggleDone={onToggleDone}
           onModify={onModify}
           onRemove={onRemove}
         />
-        <Author className="ion-margin-bottom" />
+        <div className="ion-padding-vertical">
+          <Author className="ion-margin-vertical" />
+        </div>
       </IonContent>
     </IonPage>
   );

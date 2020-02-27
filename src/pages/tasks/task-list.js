@@ -2,26 +2,17 @@ import React from "react";
 import { IonList, IonItemDivider, IonLabel } from "@ionic/react";
 import { getCurrentWeek, weekDiff } from "../../utils";
 import Task from "./task";
+import styles from "./task-list.module.css";
 
 function TaskSection({ children }) {
   return (
-    <IonItemDivider
-      sticky
-      style={{ "--background": "#f3f3f3", "--color": "black" }}
-    >
-      <IonLabel
-        style={{
-          fontWeight: "bold",
-          fontSize: 14
-        }}
-      >
-        {children}
-      </IonLabel>
+    <IonItemDivider sticky className={styles.divider}>
+      <IonLabel>{children}</IonLabel>
     </IonItemDivider>
   );
 }
 
-function TaskList({ tasks, onToggleDone, onModify, onRemove }) {
+function TaskList({ tasks, showCompleted, onToggleDone, onModify, onRemove }) {
   const currentWeek = getCurrentWeek();
   const pastTasks = [];
   const lastWeekTasks = [];
@@ -31,6 +22,10 @@ function TaskList({ tasks, onToggleDone, onModify, onRemove }) {
 
   tasks.forEach(task => {
     const diff = weekDiff(task.week, currentWeek);
+
+    if (!showCompleted && task.done) {
+      return;
+    }
 
     if (diff < -1 && !task.done) pastTasks.push(task);
     else if (diff === -1) lastWeekTasks.push(task);
@@ -65,7 +60,7 @@ function TaskList({ tasks, onToggleDone, onModify, onRemove }) {
   }
 
   return (
-    <IonList lines="full" className="ion-no-padding">
+    <IonList lines="none" className={`ion-no-padding ${styles.wrapper}`}>
       {renderSection("Past", pastTasks)}
       {renderSection("Last week", lastWeekTasks)}
       {renderSection("This week", thisWeekTasks)}
