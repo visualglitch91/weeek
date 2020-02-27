@@ -6,8 +6,7 @@ import {
   IonInput,
   IonText,
   IonRadio,
-  IonRadioGroup,
-  IonContent
+  IonRadioGroup
 } from "@ionic/react";
 import Dialog from "@material-ui/core/Dialog";
 import { getCurrentWeek, incrementWeek } from "../../utils";

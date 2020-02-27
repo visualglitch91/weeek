@@ -1,4 +1,5 @@
 ![weeek](https://i.imgur.com/WfY3IzC.png?1)
+https://weeek.netlify.com
 
 This a nice and pretty and cute to-do list that I did because I hated all the others.
 
@@ -38,4 +39,4 @@ service cloud.firestore {
 }
 ```
 
-Anyway, in gereneral, this is a standard create-react-app project, so just run `yarn` to install dependencies, `yarn start` to start the development server and `yarn build` to build the production files.
+Anyway, in general, this is a standard create-react-app project, so just run `yarn` to install dependencies, `yarn start` to start the development server and `yarn build` to build the production files.
