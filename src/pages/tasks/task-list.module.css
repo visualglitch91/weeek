@@ -1,0 +1,27 @@
+.wrapper > *:nth-child(odd) {
+  --background: #effafb;
+  --ion-item-background: #effafb;
+}
+
+.wrapper > *:nth-child(even) {
+  --background: #fef7fd;
+  --ion-item-background: #fef7fd;
+}
+
+.wrapper ion-item-sliding {
+  background: var(--background);
+}
+
+.wrapper > .divider {
+  --background: #f4f4f4;
+  --color: black;
+  font-size: 12px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  font-weight: bolder;
+}
+
+.wrapper > .divider ion-label {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}

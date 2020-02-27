@@ -2,5 +2,14 @@
   --ion-font-family: "Poppins", sans-serif;
   --ion-color-primary: #8ccbd4;
   --ion-color-secondary: #a0a0a0;
-  --ion-color-danger: #5aa0aa;
+  --ion-color-danger: #c890cc;
+}
+
+.gradient-button {
+  --color: black;
+  --background: linear-gradient(45deg, rgb(200, 240, 244), rgb(240, 187, 234));
+}
+
+.alert-button-danger {
+  color: var(--ion-color-danger) !important;
 }

@@ -19,15 +19,7 @@ function Login({ login }) {
           >
             Weeek
           </IonTitle>
-          <IonButton
-            style={{
-              "--color": "black",
-              "--background":
-                "linear-gradient(45deg, rgb(200, 240, 244), rgb(240, 187, 234))"
-            }}
-            expand="block"
-            onClick={login}
-          >
+          <IonButton className="gradient-button" expand="block" onClick={login}>
             Sign-in with Google
           </IonButton>
           <Author />
