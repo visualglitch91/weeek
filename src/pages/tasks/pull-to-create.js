@@ -10,7 +10,7 @@ const REFRESHER_CONTENT = `
 
 function PullToCreate({ onPull }) {
   function onPullToRefresh(event) {
-    event.detail.completed();
+    event.detail.complete();
     onPull();
   }
 
