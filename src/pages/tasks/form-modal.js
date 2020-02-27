@@ -90,7 +90,7 @@ function Form({ task, onSave, onCancel }) {
             />
           </IonRadioGroup>
           <div className="ion-margin-top ion-text-end">
-            <IonButton color="danger" onClick={onCancel} fill="clear">
+            <IonButton color="secondary" onClick={onCancel} fill="clear">
               Cancel
             </IonButton>
             <IonButton
