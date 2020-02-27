@@ -22,7 +22,11 @@ function App() {
   useEffect(() => userService.onAuthStateChanged(setUser), []);
 
   useEffect(() => {
-    if (!process.env.REACT_APP_USE_FIREBASE) {
+    if (
+      !process.env.REACT_APP_USE_FIREBASE &&
+      !window.localStorage.getItem("weeek_local_version_warning")
+    ) {
+      window.localStorage.setItem("weeek_local_version_warning", "true");
       presentAlert(
         null,
         [
