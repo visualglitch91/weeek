@@ -1,3 +1,6 @@
 :root {
   --ion-font-family: "Poppins", sans-serif;
+  --ion-color-primary: #8ccbd4;
+  --ion-color-secondary: #a0a0a0;
+  --ion-color-danger: #5aa0aa;
 }

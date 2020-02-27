@@ -2,3 +2,7 @@
   padding: 60px 0 120px;
   background: #f3f3f3;
 }
+
+.alertCancelButton {
+  color: var(--ion-color-danger, #eb445a) !important;
+}

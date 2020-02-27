@@ -64,7 +64,23 @@ function TasksPage({ logout }) {
   }
 
   function onRemove({ id }) {
-    taskService.remove(id);
+    presentAlert(
+      null,
+      "Are you sure you want to delete this task? This cannont be undone.",
+      [
+        {
+          text: "Take me back",
+          role: "cancel"
+        },
+        {
+          text: "Delete it!",
+          cssClass: styles.alertCancelButton,
+          handler: () => {
+            taskService.remove(id);
+          }
+        }
+      ]
+    );
   }
 
   function onNewTask() {
